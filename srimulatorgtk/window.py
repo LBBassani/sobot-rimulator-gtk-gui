@@ -24,8 +24,9 @@ import gtk
 import gobject
 
 # import gui classes
-from .viewer import Viewer
-
+from .viewer import GTKViewer
+from srimulatorcore.sim_exceptions.collision_exception import CollisionException
+from srimulatorcore.sim_exceptions.goal_reached_exception import GoalReachedException
 
 class SobotRimulatorWindow:
 
@@ -34,7 +35,7 @@ class SobotRimulatorWindow:
     self.rimulator = rimulator
 
     # create the GUI
-    self.viewer = Viewer( self )
+    self.viewer = GTKViewer( self )
 
     self.rimulator.add_viewer(self.viewer)
     
@@ -108,8 +109,13 @@ class SobotRimulatorWindow:
     
   def step_sim( self ):
     # increment the simulation
-    self.rimulator.step_sim()
-      
+    try:
+      self.rimulator.step_sim()
+    except CollisionException:
+      self.end_sim( 'Collision!' )
+    except GoalReachedException:
+      self.end_sim( 'Goal Reached!' )
+    
     # draw the resulting world
     self.draw_world()
 

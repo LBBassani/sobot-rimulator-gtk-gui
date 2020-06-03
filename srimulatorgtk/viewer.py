@@ -24,6 +24,7 @@ import gtk
 import gobject
 
 from srimulatorcore.gui.frame import Frame
+from srimulatorcore.gui.viewer import Viewer
 from .painter import Painter
 
 DEFAULT_VIEW_PIX_W = 400    # pixels
@@ -36,7 +37,7 @@ ZOOM_MIN = 30
 LS_DIALOG_RESPONSE_CANCEL = 1
 LS_DIALOG_RESPONSE_ACCEPT = 2
 
-class Viewer:
+class GTKViewer(Viewer):
   
   def __init__( self, simulator ):
     # bind the simulator
@@ -125,7 +126,7 @@ class Viewer:
     # build the draw-invisibles toggle button
     self.draw_invisibles = False                  # controls whether invisible world elements are displayed
     self.button_draw_invisibles = gtk.Button()
-    self._decorate_draw_invisibles_button_inactive()
+    self.decorate_draw_invisibles_button_inactive()
     self.button_draw_invisibles.set_image_position( gtk.POS_LEFT )
     self.button_draw_invisibles.connect( 'clicked', self.on_draw_invisibles )
 
@@ -228,8 +229,6 @@ class Viewer:
     
     
   # EVENT HANDLERS:
-  def on_play( self, widget ):
-    self.simulator.play_sim()
 
   def on_zoom_in( self, widget ):
     if self.painter.pixels_per_meter < ZOOM_MAX:
@@ -241,15 +240,7 @@ class Viewer:
     if self.painter.pixels_per_meter > ZOOM_MIN:
       self.painter.pixels_per_meter = self.painter.pixels_per_meter - 10
       self.pixels_per_meter = self.painter.pixels_per_meter
-      self.simulator.draw_world()
-    
-  def on_stop( self, widget ):
-    self.simulator.pause_sim()
-    
-    
-  def on_step( self, widget ):
-    self.simulator.step_sim_once()
-    
+      self.simulator.draw_world()  
     
   def on_reset( self, widget ):
     self.simulator.reset_sim()
@@ -294,20 +285,6 @@ class Viewer:
     elif response_id == LS_DIALOG_RESPONSE_ACCEPT:
       self.simulator.load_map( file_chooser.get_filename() )
       file_chooser.destroy()
-      
-      
-  def on_random_map( self, widget ):
-    self.simulator.random_map()
-    
-    
-  def on_draw_invisibles( self, widget ):    
-    # toggle the draw_invisibles state
-    self.draw_invisibles = not self.draw_invisibles
-    if self.draw_invisibles:
-      self._decorate_draw_invisibles_button_active()
-    else:
-      self._decorate_draw_invisibles_button_inactive()
-    self.simulator.draw_world()
     
     
   def on_expose( self, widget, event ):
@@ -319,14 +296,14 @@ class Viewer:
     return False
     
     
-  def _decorate_draw_invisibles_button_active( self ):
+  def decorate_draw_invisibles_button_active( self ):
     draw_invisibles_image = gtk.Image()
     draw_invisibles_image.set_from_stock( gtk.STOCK_REMOVE, gtk.ICON_SIZE_BUTTON )
     self.button_draw_invisibles.set_image( draw_invisibles_image )
     self.button_draw_invisibles.set_label( 'Hide Invisibles' )
     
     
-  def _decorate_draw_invisibles_button_inactive( self ):
+  def decorate_draw_invisibles_button_inactive( self ):
     draw_invisibles_image = gtk.Image()
     draw_invisibles_image.set_from_stock( gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON )
     self.button_draw_invisibles.set_image( draw_invisibles_image )
