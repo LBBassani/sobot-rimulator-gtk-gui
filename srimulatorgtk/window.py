@@ -67,7 +67,7 @@ class SobotRimulatorWindow:
     
     
   def step_sim_once( self ):
-    self.rimulator.pause_sim()
+    self.pause_sim()
     self.step_sim()
     
     
