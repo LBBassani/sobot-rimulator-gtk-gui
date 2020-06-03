@@ -1,0 +1,3 @@
+git+https://github.com/LBBassani/sobot-rimulator-core#egg=srimulatorcore
+PyGObject
+pycairo
