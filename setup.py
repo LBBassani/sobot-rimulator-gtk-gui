@@ -8,13 +8,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='srimulatorgtk',  
-     version='0.1.1',
+     version='0.1.2',
      author="Lorena B Bassani",
      author_email="lorenabassani12@gmail.com",
      description="GTK GUI of Sobot Rimulator by Nick McCrea",
      long_description=long_description,
-   long_description_content_type="text/markdown",
+     long_description_content_type="text/markdown",
      url="https://github.com/LBBassani/sobot-rimulator-gtk-gui",
+     license="GPLv3",
      packages=setuptools.find_packages(),
      classifiers=[
          "Programming Language :: Python :: 2",
