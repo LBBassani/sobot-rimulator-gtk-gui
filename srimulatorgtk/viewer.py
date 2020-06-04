@@ -193,10 +193,6 @@ class GTKViewer(Viewer):
     self.window.show_all()
     
     
-  def new_frame( self ):
-    self.current_frame = Frame()
-    
-    
   def draw_frame( self , x = 0 , y = 0):
     self.drawing_area.queue_draw_area( x, y, self.view_width_pixels, self.view_height_pixels )
     
