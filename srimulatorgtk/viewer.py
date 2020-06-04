@@ -229,6 +229,20 @@ class GTKViewer(Viewer):
     
     
   # EVENT HANDLERS:
+  def on_play( self, widget ):
+    self.simulator.play_sim()
+    
+  def on_stop( self, widget ):
+    self.simulator.pause_sim()
+    
+    
+  def on_step( self, widget ):
+    self.simulator.step_sim_once()
+    
+    
+  def on_reset( self, widget ):
+    self.simulator.reset_sim()
+
 
   def on_zoom_in( self, widget ):
     if self.painter.pixels_per_meter < ZOOM_MAX:
@@ -285,7 +299,10 @@ class GTKViewer(Viewer):
     elif response_id == LS_DIALOG_RESPONSE_ACCEPT:
       self.simulator.load_map( file_chooser.get_filename() )
       file_chooser.destroy()
-    
+  
+        
+  def on_random_map( self, widget ):
+    self.simulator.random_map()
     
   def on_expose( self, widget, event ):
     self.painter.draw_frame( self.current_frame )
@@ -294,7 +311,15 @@ class GTKViewer(Viewer):
   def on_delete( self, widget, event ):
     gtk.main_quit()
     return False
-    
+  
+  def on_draw_invisibles( self, widget ):    
+  # toggle the draw_invisibles state
+    self.draw_invisibles = not self.draw_invisibles
+    if self.draw_invisibles:
+      self.decorate_draw_invisibles_button_active()
+    else:
+      self.decorate_draw_invisibles_button_inactive()
+    self.simulator.draw_world()
     
   def decorate_draw_invisibles_button_active( self ):
     draw_invisibles_image = gtk.Image()
