@@ -194,6 +194,7 @@ class GTKViewer(Viewer):
     
     
   def draw_frame( self , x = 0 , y = 0):
+    self._draw_grid_to_frame()
     self.drawing_area.queue_draw_area( x, y, self.view_width_pixels, self.view_height_pixels )
     
     
